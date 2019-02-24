@@ -16,3 +16,4 @@ flask-httpauth
 twilio
 imgurpython
 configparser
+requests
