@@ -6,7 +6,7 @@ To try it out text any meme query to +17205130277 and recieve a matching meme.
 # How to use
 1. Text 17205130277
 2. chose format
-  * meme <query>
-  * gif <query>
-  * insult
+  * `meme <query>`
+  * `gif <query>`
+  * `insult`
 3. enjoy
