@@ -66,24 +66,21 @@ def sms_ahoy_reply():
                                     to=request.values['From'],
                                     body='An unexpected error occured.'
                 )
-        elif fields[0] == 'gif':
+        elif fields[0].lower() == 'gif':
             # return a gif related to the keyword
             req = request.values['Body'].replace("meme", "", 1)
             query = {'q': req, 'apikey': 'dc6zaTOxFJmzC'}
             headers = {'X-RapidAPI-Key': '0b7e7db0dfmshddfdc1e9523edf6p1c40d5jsn42179db7b62e'}
             r = requests.get('https://giphy.p.rapidapi.com/v1/gifs/search?' + urllib.parse.urlencode(query), headers=headers)
-            print(type(r))
-            print(r)
-            print(type(r.text))
-            items = r['data']
+            items = r.json()['data']
             item_index = random.randint(0, len(items)-1)
             message = twi_client.messages.create(
                                 from_='+17205130277',
                                 to=request.values['From'],
-                                media_url=r.text['data'][item_index]['images']['original']['url']
+                                media_url=items[item_index]['images']['original']['url']
             )
 
-        elif fields[0] == 'insult':
+        elif fields[0].lower() == 'insult':
             # return a random spotify song
             query = {'mode': 'random'}
             headers = {'X-RapidAPI-Key': '0b7e7db0dfmshddfdc1e9523edf6p1c40d5jsn42179db7b62e'}
