@@ -9,8 +9,6 @@ import json
 import os
 
 from hack import app
-import hack.db
-from hack.db import db_session, init_db
 from twilio.rest import Client
 
 #app = Flask(__name__)
@@ -36,34 +34,41 @@ def sms_ahoy_reply():
 
     # if there is a message
     if len(fields) > 0:
-        command = fields[0]
+        try:
+            command = fields[0]
 
-        if "meme" in request.values['Body'].lower():
             # do something with imgur
             req = request.values['Body'].replace("meme", "", 1)
             items = client.gallery_search(request.values['Body'], advanced=None, sort='time', window='all', page=0)
             print(len(items))
-            item_index = random.randint(0, len(items)-1)
-            image_link = items[item_index].link
+            if len(items) > 0:
+                item_index = random.randint(0, len(items)-1)
+                image_link = items[item_index].link
 
-            album_id = items[item_index].link.split('/')[-1]
-            if '.' not in album_id:
-                album_items = client.get_album_images(album_id)
-                image_link = album_items[0].link
-            print(image_link)
-            message = twi_client.messages \
-                    .create(
+                album_id = items[item_index].link.split('/')[-1]
+                if '.' not in album_id:
+                    album_items = client.get_album_images(album_id)
+                    image_link = album_items[0].link
+                print(image_link)
+                message = twi_client.messages \
+                        .create(
+                                from_='+17205130277',
+                                to=request.values['From'],
+                                media_url=image_link
+                        )
+        except:
+            message = twi_client.messages.create(
+                                from_='+17205130277',
+                                to=request.values['From'],
+                                body='An unexpected error occured.'
+                                )
+
+    else:
+        message = twi_client.messages.create(
                             from_='+17205130277',
-                            #to=request.values['From'],
-                            to='+17033099847',
-                            media_url=image_link
-                    )
-            #resp.message(items[0])
-        elif command == 'gif':
-            # do something with giphy
-            print()
-
-
+                            to=request.values['From'],
+                            body='No results found.'
+                            )
 
     print(request.values['Body'])
 
