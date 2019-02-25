@@ -1,20 +1,6 @@
 version: '3.1'
 
 services:
-        db:
-                image: postgres:latest
-                restart: always
-                hostname: postgres.hack.net
-                ports:
-                        - 5433:5432
-                environment:
-                        POSTGRES_PASSWORD: csuhack3r
-                        POSTGRES_DB: hack
-                volumes:
-                        - db_hackathon:/var/lib/postgresql/data
-                networks:
-                        - back_net
-
         flask:
                 image: flask
                 build: ./backend
@@ -25,9 +11,6 @@ services:
                         FLASK_APP: flask.py
                         FLASK_DEBUG: 1
                         FLASK_ENV: development
-volumes:
-    db_hackathon:
-
 networks:
     back_net:
         external: true
