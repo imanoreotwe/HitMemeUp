@@ -1,4 +1,6 @@
 # HitMemeUp
+HackCU 2019 Hackathon submition
+
 A flask based, docker contained, text based, meme searcher. 
 `docker-compose` file is there for you to run on your own hardware.
 
